@@ -3,8 +3,11 @@
 import sys, time
 from PyQt4 import QtGui, QtCore
 import urllib, json
+import feedparser
 
 class Example(QtGui.QWidget):
+	
+	
 
     def __init__(self):
         super(Example, self).__init__()
@@ -30,14 +33,40 @@ class Example(QtGui.QWidget):
         self.labelWeekDay = QtGui.QLabel(time.strftime("%A").decode('utf-8'), self)
         self.labelWeekDay.setStyleSheet("font-size: 24px")
         self.labelWeekDay.move(10,70)
+        
+        
                 
         self.timer = QtCore.QTimer(self)
         self.timer.setInterval(1000)
         self.timer.timeout.connect(self.displayTime)
         self.timer.start()
         
+        self.timer2 = QtCore.QTimer(self)
+        self.timer2.setInterval(5000)
+        self.timer2.timeout.connect(self.displayRSS)
+        self.timer2.start()
+        
+        python_wiki_rss_url = "http://wiadomosci.wp.pl/kat,1329,ver,rss,rss.xml"
+        self.feed = feedparser.parse( python_wiki_rss_url )
+        print(self.feed[ "channel" ][ "title" ])
+        
+        self.labelRss = QtGui.QLabel(self.feed["items"][0]["title"]+"                                                                   ", self)
+        self.labelRss.setStyleSheet("font-size: 24px")
+        self.labelRss.move(100,600)
+			
+
+        
         self.showFullScreen()
-    
+        
+        self.i = 1
+        
+    def displayRSS(self):
+		self.labelRss.setText(self.feed["items"][self.i]["title"])
+		if self.i == len(self.feed['items']) - 1:
+			self.i = 0
+		else:
+			self.i += 1
+		
     def displayTime(self):
 		timeString = QtCore.QTime.currentTime().toString();
 		self.label.setText(timeString)
