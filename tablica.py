@@ -53,6 +53,13 @@ class Example(QtGui.QWidget):
         self.labelRss = QtGui.QLabel(self.feed["items"][0]["title"]+"                                                                   ", self)
         self.labelRss.setStyleSheet("font-size: 24px")
         self.labelRss.move(100,600)
+        
+        self.labelImg = QtGui.QLabel(self)
+        self.labelImg.move(500,400)
+        self.labelImg.setFixedSize(200,200)
+        myPixmap = QtGui.QPixmap('/home/damian/Dokumenty/earth.png')
+        myScaledPixmap = myPixmap.scaled(self.labelImg.size(), QtCore.Qt.KeepAspectRatio)
+        self.labelImg.setPixmap(myScaledPixmap)
 			
 
         
@@ -104,10 +111,10 @@ def main():
     cisnienie.setText(str(data['main']['pressure'])+' hPa')
     wilgotnosc.setText(str(data['main']['humidity'])+'%')
     
-    c.move(screenShape.width()-200,10)
-    opis.move(screenShape.width()-200,40)
-    cisnienie.move(screenShape.width()-200,70)
-    wilgotnosc.move(screenShape.width()-200,85)
+    c.move(screenShape.width()-300,10)
+    opis.move(screenShape.width()-300,40)
+    cisnienie.move(screenShape.width()-300,70)
+    wilgotnosc.move(screenShape.width()-300,85)
     
     c.setStyleSheet("font-size: 24px")
     opis.setStyleSheet("font-size: 22px")
