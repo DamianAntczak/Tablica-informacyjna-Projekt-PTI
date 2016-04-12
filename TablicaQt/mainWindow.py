@@ -6,6 +6,7 @@ import sys, time
 from PyQt4 import QtGui, QtCore
 import urllib, json
 import feedparser
+from PyQt4.phonon import Phonon
 
 
 class DateTimeWidget(QtGui.QWidget):
@@ -109,8 +110,39 @@ class WeathercastWidget(QtGui.QWidget):
 		
 		self.c.setStyleSheet("font-size: 24px")
 		self.opis.setStyleSheet("font-size: 22px")
+		
+		
+class ImageWidget(QtGui.QWidget):
 
+    def __init__(self,parent=None):
+        super(ImageWidget, self).__init__(parent)
+	
+        self.initUI()
         
+
+    def initUI(self):
+		self.setGeometry(800,200,200,200)
+		self.labelImg = QtGui.QLabel(self)
+		self.labelImg.setFixedSize(200,200)
+		myPixmap = QtGui.QPixmap('/home/damian/Dokumenty/earth.png')
+		myScaledPixmap = myPixmap.scaled(self.labelImg.size(), QtCore.Qt.KeepAspectRatio)
+		self.labelImg.setPixmap(myScaledPixmap)
+
+class VideoWidget(QtGui.QWidget):
+
+    def __init__(self,parent=None):
+        super(VideoWidget, self).__init__(parent)
+	
+        self.initUI()
+        
+
+    def initUI(self):
+		self.setGeometry(800,200,400,200)
+		vp = Phonon.VideoPlayer()
+		media = Phonon.MediaSource('/home/damian/Dokumenty/tablica/tail toddle.mp3')
+		vp.load(media)
+		vp.play()
+		vp.show()    
 
 class MainWindow(QtGui.QMainWindow):
 
@@ -132,8 +164,15 @@ class MainWindow(QtGui.QMainWindow):
         
         self.weathercastWidget = WeathercastWidget(self)
         
+        self.imageWidget = ImageWidget(self)
+        #self.videoWidget = VideoWidget(self)
         
         self.showFullScreen()
+        
+	def keyPressEvent(self, e):
+
+		if e.key() == QtCore.Qt.Key_Escape:
+			self.close()
 
 
 def main():
