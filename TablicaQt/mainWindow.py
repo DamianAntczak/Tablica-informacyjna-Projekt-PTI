@@ -11,18 +11,18 @@ from PyQt4.phonon import Phonon
 
 class DateTimeWidget(QtGui.QWidget):
 
-    def __init__(self,parent=None):
+    def __init__(self,parent=None, x=0, y=0):
         super(DateTimeWidget, self).__init__(parent)
 	
-        self.initUI()
+        self.initUI(x,y)
         
     def displayTime(self):
 		timeString = QtCore.QTime.currentTime().toString();
 		self.label.setText(timeString)
 
-    def initUI(self):
+    def initUI(self,x,y):
 
-        self.setGeometry(300,300,250,150)
+        self.setGeometry(x,y,250,150)
         
         
         
@@ -46,10 +46,10 @@ class DateTimeWidget(QtGui.QWidget):
 
 class RssWidget(QtGui.QWidget):
 
-    def __init__(self,parent=None):
+    def __init__(self,parent=None,x=0,y=0):
         super(RssWidget, self).__init__(parent)
 	
-        self.initUI()
+        self.initUI(x,y)
         
     def displayRSS(self):
 		self.labelRss.setText(self.feed["items"][self.i]["title"])
@@ -58,10 +58,10 @@ class RssWidget(QtGui.QWidget):
 		else:
 			self.i += 1
 
-    def initUI(self):
+    def initUI(self,x,y):
 		
 		self.i = 1
-		self.setGeometry(300,600,250,150)
+		self.setGeometry(x,y,800,50)
 		self.timer2 = QtCore.QTimer(self)
 		self.timer2.setInterval(5000)
 		self.timer2.timeout.connect(self.displayRSS)
@@ -77,15 +77,15 @@ class RssWidget(QtGui.QWidget):
 		
 class WeathercastWidget(QtGui.QWidget):
 
-    def __init__(self,parent=None):
+    def __init__(self,parent=None,x=0,y=0):
         super(WeathercastWidget, self).__init__(parent)
 	
-        self.initUI()
+        self.initUI(x,y)
         
 
-    def initUI(self):
+    def initUI(self,x,y):
 		
-		self.setGeometry(300,600,250,150)
+		self.setGeometry(x,y,250,150)
 		self.c = QtGui.QLabel(self)
 		self.opis = QtGui.QLabel(self)
 		self.cisnienie = QtGui.QLabel(self)
@@ -114,19 +114,38 @@ class WeathercastWidget(QtGui.QWidget):
 		
 class ImageWidget(QtGui.QWidget):
 
-    def __init__(self,parent=None):
-        super(ImageWidget, self).__init__(parent)
-	
-        self.initUI()
-        
 
-    def initUI(self):
-		self.setGeometry(800,200,200,200)
+        
+	def initUI(self,x,y):
+		self.setGeometry(x,y,200,200)
 		self.labelImg = QtGui.QLabel(self)
 		self.labelImg.setFixedSize(200,200)
-		myPixmap = QtGui.QPixmap('/home/damian/Dokumenty/earth.png')
-		myScaledPixmap = myPixmap.scaled(self.labelImg.size(), QtCore.Qt.KeepAspectRatio)
-		self.labelImg.setPixmap(myScaledPixmap)
+		#self.myPixmap = QtGui.QPixmap('/home/damian/Dokumenty/earth.png')
+		#self.myScaledPixmap = self.myPixmap.scaled(self.labelImg.size(), QtCore.Qt.KeepAspectRatio)
+		#self.labelImg.setPixmap(self.myScaledPixmap)
+		
+		self.timer = QtCore.QTimer(self)
+		self.timer.setInterval(1000)
+		self.timer.timeout.connect(self.displayImage)
+		self.timer.start()
+		
+	def displayImage(self):
+		self.myPixmap = QtGui.QPixmap('/home/damian/Dokumenty/'+self.fileNameArray[self.i])
+		self.myScaledPixmap = self.myPixmap.scaled(self.labelImg.size(), QtCore.Qt.KeepAspectRatio)
+		self.labelImg.setPixmap(self.myScaledPixmap)
+		if(self.i == 1):
+			self.i = 0
+		else:
+			self.i+=1
+            
+	def __init__(self,parent=None,x=0,y=0):
+		super(ImageWidget, self).__init__(parent)
+	
+		self.initUI(x,y)
+		self.fileNameArray =['earth.png','tux.png']
+		self.i = 0;
+		
+		
 
 class VideoWidget(QtGui.QWidget):
 
@@ -156,17 +175,20 @@ class MainWindow(QtGui.QMainWindow):
         self.statusBar().showMessage('Ready')
 
         self.setGeometry(300, 300, 250, 150)
-        self.setStyleSheet("background-color: #99e6ff") 
+        self.setStyleSheet("background-color: #99ff99") 
         
-        self.dateTimeWidget = DateTimeWidget(self)
-        self.rssWidget = RssWidget(self)
-        self.rssWidget.move(0,200)
+        self.dateTimeWidget = DateTimeWidget(self,0,20)
         
-        self.weathercastWidget = WeathercastWidget(self)
         
-        self.imageWidget = ImageWidget(self)
+        
+        screenShape = QtGui.QDesktopWidget().screenGeometry()
+        
+        self.weathercastWidget = WeathercastWidget(self,screenShape.width() - 200,20)
+        self.rssWidget = RssWidget(self,screenShape.width()*0.2,screenShape.height()*0.75)
+        self.imageWidget = ImageWidget(self,screenShape.width()/2-100,screenShape.height()/2-100)
         #self.videoWidget = VideoWidget(self)
         
+
         self.showFullScreen()
         
 	def keyPressEvent(self, e):
@@ -179,6 +201,8 @@ def main():
 
     app = QtGui.QApplication(sys.argv)
     ex = MainWindow()
+    
+    
     
     sys.exit(app.exec_())
 
