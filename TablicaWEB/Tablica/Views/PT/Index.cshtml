@@ -1,0 +1,42 @@
+﻿<script type="text/javascript">
+        $(function () {
+            $("#but").click(
+                function () {
+                    $("#pd").html("DDD");
+                });
+        });
+</script>
+<script type="text/javascript">
+        $(function () {
+            $("#d1").draggable({
+                drag: function (event, ui) {
+                    $("#x").val(ui.position.left);
+                    $("#y").val(ui.position.top);
+                }
+            });
+        });
+</script>
+<style>
+    div.dd {
+        border-style: solid;
+        width: 200px;
+    }
+</style>
+<div>
+    <form id="form1">
+        <div id="d1" class="dd">
+            <input type="button" value="asd" id="but" />
+            <p id="pd">Move This Div</p>
+
+        </div>
+        <table id="console">
+            <tr>
+                <td>drag x: </td>
+                <td><input type="text" id="x" class="console" /></td>
+                <td>drag y: </td>
+                <td><input type="text" id="y" class="console" /></td>
+            </tr>
+        </table>
+    </form>
+</div>
+

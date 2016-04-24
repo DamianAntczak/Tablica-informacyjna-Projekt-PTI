@@ -21,5 +21,13 @@ namespace Tablica.Controllers {
 
             return View();
         }
+        public ActionResult Widok() {
+            ViewBag.Message = "Przykładowy widok";
+            return View();
+        }
+        public PartialViewResult GetInfo() {
+            ViewBag.ItemDetails = "Jakiej info, nie wiem jakie";
+            return PartialView("_JakiesInfo");
+        }
     }
 }
