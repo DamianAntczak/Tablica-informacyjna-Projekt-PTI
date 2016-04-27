@@ -19,5 +19,9 @@ class XMLparser:
 		#print i.getElementsByTagName("WeathercastWidget")[0].getAttribute("x")
 		#print i.getElementsByTagName("WeathercastWidget")[0].getAttribute("y")
 		
-		s = i.getAttribute("name")+'(self,'+i.getAttribute("x")+','+i.getAttribute("y")+')';
+		if not i.getAttribute("extra"):
+			s = i.getAttribute("name")+'(self,'+i.getAttribute("x")+','+i.getAttribute("y")+')'
+		else:
+			s = i.getAttribute("name")+'(self,'+i.getAttribute("x")+','+i.getAttribute("y")+','+i.getAttribute("extra")+')'
+			print s
 		widgetList.append(s)

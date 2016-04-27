@@ -47,10 +47,10 @@ class DateTimeWidget(QtGui.QWidget):
 
 class RssWidget(QtGui.QWidget):
 
-    def __init__(self,parent=None,x=0,y=0):
+    def __init__(self,parent=None,x=0,y=0,rss_url="http://wiadomosci.wp.pl/kat,1329,ver,rss,rss.xml"):
         super(RssWidget, self).__init__(parent)
 	
-        self.initUI(x,y)
+        self.initUI(x,y,rss_url)
         
     def displayRSS(self):
 		self.labelRss.setText(self.feed["items"][self.i]["title"])
@@ -59,7 +59,7 @@ class RssWidget(QtGui.QWidget):
 		else:
 			self.i += 1
 
-    def initUI(self,x,y):
+    def initUI(self,x,y,rss_url):
 		
 		self.i = 1
 		self.setGeometry(x,y,800,50)
@@ -68,8 +68,7 @@ class RssWidget(QtGui.QWidget):
 		self.timer2.timeout.connect(self.displayRSS)
 		self.timer2.start()
         
-		python_wiki_rss_url = "http://wiadomosci.wp.pl/kat,1329,ver,rss,rss.xml"
-		self.feed = feedparser.parse( python_wiki_rss_url )
+		self.feed = feedparser.parse( rss_url )
 		print(self.feed[ "channel" ][ "title" ])
         
 		self.labelRss = QtGui.QLabel(self.feed["items"][0]["title"]+"                                                                   ", self)
