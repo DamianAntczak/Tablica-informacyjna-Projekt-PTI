@@ -1,0 +1,7 @@
+<table>
+    <page>
+        <widget name="WeathercastWidget" x="85" y="10"></widget>
+        <widget name="RssWidget" x="600" y="500"></widget>
+        <widget name="ImageWidget" x="300" y="85"></widget>
+    </page>
+</table>

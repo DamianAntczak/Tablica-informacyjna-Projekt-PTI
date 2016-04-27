@@ -7,6 +7,7 @@ from PyQt4 import QtGui, QtCore
 import urllib, json
 import feedparser
 from PyQt4.phonon import Phonon
+from XMLparser import XMLparser
 
 
 class DateTimeWidget(QtGui.QWidget):
@@ -30,7 +31,7 @@ class DateTimeWidget(QtGui.QWidget):
         self.label.setStyleSheet("font-size: 24px")
         self.label.move(10,10)
         
-        self.labelDate = QtGui.QLabel(time.strftime("%d %B %Y"), self)
+        self.labelDate = QtGui.QLabel(time.strftime("%d %B %Y").decode('utf-8'), self)
         self.labelDate.setStyleSheet("font-size: 24px")
         self.labelDate.move(10,40)
         
@@ -77,13 +78,13 @@ class RssWidget(QtGui.QWidget):
 		
 class WeathercastWidget(QtGui.QWidget):
 
-    def __init__(self,parent=None,x=0,y=0):
+    def __init__(self,parent=None,x=0,y=0,url="http://api.openweathermap.org/data/2.5/weather?q=Poznan,pl&APPID=b4ea1aaa3e45dfff27f3557cdd18c301&lang=pl&units=metric"):
         super(WeathercastWidget, self).__init__(parent)
 	
-        self.initUI(x,y)
+        self.initUI(x,y,url)
         
 
-    def initUI(self,x,y):
+    def initUI(self,x,y,url):
 		
 		self.setGeometry(x,y,250,150)
 		self.c = QtGui.QLabel(self)
@@ -91,14 +92,15 @@ class WeathercastWidget(QtGui.QWidget):
 		self.cisnienie = QtGui.QLabel(self)
 		self.wilgotnosc = QtGui.QLabel(self)
 		
-		url = "http://api.openweathermap.org/data/2.5/weather?q=Poznan,pl&APPID=b4ea1aaa3e45dfff27f3557cdd18c301&lang=pl&units=metric"
+		#url = "http://api.openweathermap.org/data/2.5/weather?q=Poznan,pl&APPID=b4ea1aaa3e45dfff27f3557cdd18c301&lang=pl&units=metric"
 		response = urllib.urlopen(url)
 		data = json.loads(response.read())
 		print data
 		
 		screenShape = QtGui.QDesktopWidget().screenGeometry()
 		
-		self.c.setText('Poznan ' + str(data['main']['temp'])+'℃'.decode('utf-8'))
+		#self.c.setText('Poznań '.decode('utf-8') + str(data['main']['temp'])+'℃'.decode('utf-8'))
+		self.c.setText(str(data['name']).decode('utf-8')+' '+ str(data['main']['temp'])+'℃'.decode('utf-8'))
 		self.opis.setText(data['weather'][0]['description'])
 		self.cisnienie.setText(str(data['main']['pressure'])+' hPa')
 		self.wilgotnosc.setText(str(data['main']['humidity'])+'%')
@@ -175,18 +177,24 @@ class MainWindow(QtGui.QMainWindow):
         self.statusBar().showMessage('Ready')
 
         self.setGeometry(300, 300, 250, 150)
-        self.setStyleSheet("background-color: #99ff99") 
+        self.setStyleSheet("background-color: #f5f5f5") 
         
-        self.dateTimeWidget = DateTimeWidget(self,0,20)
+        #self.dateTimeWidget = DateTimeWidget(self,0,20)
         
         
         
         screenShape = QtGui.QDesktopWidget().screenGeometry()
         
-        self.weathercastWidget = WeathercastWidget(self,screenShape.width() - 200,20)
-        self.rssWidget = RssWidget(self,screenShape.width()*0.2,screenShape.height()*0.75)
-        self.imageWidget = ImageWidget(self,screenShape.width()/2-100,screenShape.height()/2-100)
+        #self.weathercastWidget = WeathercastWidget(self,screenShape.width() - 200,20)
+        #self.weathercastWidget2 = WeathercastWidget(self,screenShape.width() - 200,screenShape.height() - 200,"http://api.openweathermap.org/data/2.5/weather?q=London,gb&APPID=b4ea1aaa3e45dfff27f3557cdd18c301&lang=pl&units=metric")
+        #self.rssWidget = RssWidget(self,screenShape.width()*0.2,screenShape.height()*0.75)
+        #self.imageWidget = ImageWidget(self,screenShape.width()/2-100,screenShape.height()/2-100)
         #self.videoWidget = VideoWidget(self)
+        
+        xml = XMLparser()
+        
+        for i in xml.widgetList:
+			eval(i)
         
 
         self.showFullScreen()
