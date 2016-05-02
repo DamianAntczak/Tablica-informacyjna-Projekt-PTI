@@ -1,67 +1,129 @@
 ﻿<script src="jquery.js" type="text/javascript"></script>
 <script src="jquery-ui.min.js" type="text/javascript"></script>
 <script type="text/javascript">
-        $(function () {
-            $("#but").click(function () {
-                $("#but").hide();
-            })
-        });
+    $(function () {
+        $("#tablica").sortable();
+    });
 </script>
 <script type="text/javascript">
-        $(function () {
-            $(".obiekt").draggable({
-                drag: function (event, ui) {
-                    $("#x").val(ui.position.left);
-                    $("#y").val(ui.position.top);
-                },
-                containment: "#tablica",
-                grid: [20,20]
-            });
+    $(function () {
+        var $element;
+        var $pos;
+        $(".obiekt").draggable({
+            start: function () {
+                $element = this;
+            },
+            drag: function (event, ui) {
+                $pos = $(this).offset();
+                $(".xPos", $element).val($pos.left);
+                $(".yPos", $element).val($pos.top);
+                $(".xD").val($pos.left + " top: " + $pos.top);
+            },
+            containment: "#tablica"
         });
+    });
+</script>
+<script type="text/javascript">
+    $(function () {
+        var $listOfElem = $("#listOfElem");
+        $("li", $listOfElem).draggable({
+            helper: "clone",
+            revert: "invalid",
+            connectToSortable: "#tablica"
+        });
+        $("li", $listOfElem).droppable({
+
+            drop: function (event, ui) {
+                var b = ui.getElementsByTagName('li');
+
+                while (b.length) {
+                    var parent = b[0].parentNode;
+                    while (b[0].firstChild) {
+                        parent.insertBefore(b[0].firstChild, b[0]);
+                    }
+                    parent.removeChild(b[0]);
+                }
+            }
+        });
+    });
 </script>
 <style>
     div.obiekt {
         border-style: solid;
         width: 200px;
         height: auto;
+        object-position: left,top;
     }
 
     #tablica {
-        width: auto;
-        height: 700px;
+        width: 600px;
+        height: 350px;
         border-style: solid;
         border-color: red;
+        float: left;
+    }
+
+    div.firstdiv {
+        border-style: dotted;
+        width: 200px;
+        height: 100px;
+    }
+
+    #listOfElem {
+        border-style: double;
+        float: left;
     }
 </style>
 <div id="tablica">
-    <form id="form1">
-        <div id="d1" class="obiekt">
-            <input type="button" value="Klik" id="but" />
-            <p id="pd">Zegar</p>
-            <table id="console">
-                <tr>
-                    <td>drag x: </td>
-                    <td><input type="text" id="x" class="console" /></td>
-                </tr>
-                <tr>
-                    <td>drag y: </td>
-                    <td><input type="text" id="y" class="console" /></td>
-                </tr>
-            </table>
-        </div>
-        <div id="d2" class="obiekt">
-            <p id="pd">Inny element</p>
-            <table id="console2">
-                <tr>
-                    <td>drag x: </td>
-                    <td><input type="text" id="x" class="console2" /></td>
-                </tr>
-                <tr>
-                    <td>drag y: </td>
-                    <td><input type="text" id="y" class="console2" /></td>
-                </tr>
-            </table>
-        </div>
-    </form>
+    <div class="firstdiv">
+    </div>
 </div>
+<ul id="listOfElem">
+    <li class="elem">
+        <div class="obiekt">
+            <p id="pd">Zegar</p>
+            <table>
+                <tr>
+                    <td>drag x: </td>
+                    <td><input type="text" class="xPos" /></td>
+                </tr>
+                <tr>
+                    <td>drag y: </td>
+                    <td><input type="text" class="yPos" /></td>
+                </tr>
+            </table>
+        </div>
+    </li>
+    <li class="elem">
+        <div class="obiekt">
+            <p id="pd">RSS</p>
+            <table>
+                <tr>
+                    <td>drag x: </td>
+                    <td><input type="text" class="xPos" /></td>
+                </tr>
+                <tr>
+                    <td>drag y: </td>
+                    <td><input type="text" class="yPos" /></td>
+                </tr>
+            </table>
+        </div>
+    </li>
+    <li class="elem">
+        <div class="obiekt">
+            <p id="pd">Pogoda</p>
+            <table>
+                <tr>
+                    <td>drag x: </td>
+                    <td><input type="text" class="xPos" /></td>
+                </tr>
+                <tr>
+                    <td>drag y: </td>
+                    <td><input type="text" class="yPos" /></td>
+                </tr>
+            </table>
+        </div>
+    </li>
+</ul>
+<input type="text" class="xD" />
 
