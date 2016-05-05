@@ -2,53 +2,50 @@
 <script src="jquery-ui.min.js" type="text/javascript"></script>
 <script type="text/javascript">
     $(function () {
-        $("#tablica").sortable();
-    });
-</script>
-<script type="text/javascript">
-    $(function () {
         var $element;
         var $pos;
-        $(".obiekt").draggable({
-            start: function () {
-                $element = this;
-            },
-            drag: function (event, ui) {
-                $pos = $(this).offset();
-                $(".xPos", $element).val($pos.left);
-                $(".yPos", $element).val($pos.top);
-                $(".xD").val($pos.left + " top: " + $pos.top);
-            },
-            containment: "#tablica"
-        });
-    });
-</script>
-<script type="text/javascript">
-    $(function () {
-        var $listOfElem = $("#listOfElem");
-        $("li", $listOfElem).draggable({
+        $(".ob").draggable({
             helper: "clone",
-            revert: "invalid",
-            connectToSortable: "#tablica"
+            revert: "invalid"
         });
-        $("li", $listOfElem).droppable({
-
+        $("#tablica").droppable({
+            accept: ".ob",
             drop: function (event, ui) {
-                var b = ui.getElementsByTagName('li');
-
-                while (b.length) {
-                    var parent = b[0].parentNode;
-                    while (b[0].firstChild) {
-                        parent.insertBefore(b[0].firstChild, b[0]);
-                    }
-                    parent.removeChild(b[0]);
-                }
+                $(this).append($(ui.draggable).clone());
+                $("#tablica .ob").addClass("obiekt");
+                $(".obiekt").removeClass("ui-draggable ob");
+                
+                $(".obiekt").draggable({
+                    snap: true,
+                    create: function (event, ui) {                      
+                        $(this).position({
+                            of: "#firstdiv"
+                        });
+                    },
+                    start: function () {
+                        $element = this;
+                    },
+                    drag: function (event, ui) {
+                        $pos = $(this).offset();
+                        $(".xPos", $element).val($pos.left);
+                        $(".yPos", $element).val($pos.top);
+                        $(".xD").val($pos.left + " top: " + $pos.top);
+                    },
+                    containment: "#tablica"
+                });
             }
         });
     });
 </script>
 <style>
     div.obiekt {
+        border-style: solid;
+        width: 200px;
+        height: auto;
+        object-position: left,top;
+    }
+
+    div.ob {
         border-style: solid;
         width: 200px;
         height: auto;
@@ -63,7 +60,7 @@
         float: left;
     }
 
-    div.firstdiv {
+    #firstdiv {
         border-style: dotted;
         width: 200px;
         height: 100px;
@@ -75,12 +72,12 @@
     }
 </style>
 <div id="tablica">
-    <div class="firstdiv">
+    <div id="firstdiv">
     </div>
 </div>
 <ul id="listOfElem">
     <li class="elem">
-        <div class="obiekt">
+        <div class="ob">
             <p id="pd">Zegar</p>
             <table>
                 <tr>
@@ -95,7 +92,7 @@
         </div>
     </li>
     <li class="elem">
-        <div class="obiekt">
+        <div class="ob">
             <p id="pd">RSS</p>
             <table>
                 <tr>
@@ -110,7 +107,7 @@
         </div>
     </li>
     <li class="elem">
-        <div class="obiekt">
+        <div class="ob">
             <p id="pd">Pogoda</p>
             <table>
                 <tr>
