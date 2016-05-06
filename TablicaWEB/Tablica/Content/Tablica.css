@@ -1,0 +1,32 @@
+﻿div.obiekt {
+    border-style: solid;
+    width: 200px;
+    height: auto;
+    object-position: left,top;
+}
+
+div.ob {
+    border-style: solid;
+    width: 200px;
+    height: auto;
+    object-position: left,top;
+}
+
+#tablica {
+    width: 800px;
+    height: 600px;
+    border-style: solid;
+    border-color: red;
+    float: left;
+}
+
+#firstdiv {
+    border-style: dotted;
+    width: 200px;
+    height: 100px;
+}
+
+#listOfElem {
+    border-style: double;
+    float: left;
+}
