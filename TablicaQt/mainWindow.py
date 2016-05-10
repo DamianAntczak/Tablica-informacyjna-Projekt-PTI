@@ -3,6 +3,7 @@
 #
 
 import sys, time
+import os
 from PyQt4 import QtGui, QtCore
 import urllib, json
 import feedparser
@@ -118,9 +119,9 @@ class ImageWidget(QtGui.QWidget):
 
         
 	def initUI(self,x,y):
-		self.setGeometry(x,y,200,200)
+		self.setGeometry(x,y,640,360)
 		self.labelImg = QtGui.QLabel(self)
-		self.labelImg.setFixedSize(200,200)
+		self.labelImg.setFixedSize(640,360)
 		#self.myPixmap = QtGui.QPixmap('/home/damian/Dokumenty/earth.png')
 		#self.myScaledPixmap = self.myPixmap.scaled(self.labelImg.size(), QtCore.Qt.KeepAspectRatio)
 		#self.labelImg.setPixmap(self.myScaledPixmap)
@@ -131,10 +132,10 @@ class ImageWidget(QtGui.QWidget):
 		self.timer.start()
 		
 	def displayImage(self):
-		self.myPixmap = QtGui.QPixmap('/home/damian/Dokumenty/'+self.fileNameArray[self.i])
+		self.myPixmap = QtGui.QPixmap('/home/damian/Dokumenty/tablica/images/'+self.fileNameArray[self.i])
 		self.myScaledPixmap = self.myPixmap.scaled(self.labelImg.size(), QtCore.Qt.KeepAspectRatio)
 		self.labelImg.setPixmap(self.myScaledPixmap)
-		if(self.i == 1):
+		if self.i == len(self.fileNameArray) - 1:
 			self.i = 0
 		else:
 			self.i+=1
@@ -143,7 +144,7 @@ class ImageWidget(QtGui.QWidget):
 		super(ImageWidget, self).__init__(parent)
 	
 		self.initUI(x,y)
-		self.fileNameArray =['earth.png','tux.png']
+		self.fileNameArray = os.listdir("/home/damian/Dokumenty/tablica/images")
 		self.i = 0;
 		
 		
@@ -158,11 +159,12 @@ class VideoWidget(QtGui.QWidget):
 
     def initUI(self):
 		self.setGeometry(800,200,400,200)
-		vp = Phonon.VideoPlayer()
-		media = Phonon.MediaSource('/home/damian/Dokumenty/tablica/tail toddle.mp3')
-		vp.load(media)
-		vp.play()
-		vp.show()    
+		self.vp = Phonon.VideoPlayer()
+		media = Phonon.MediaSource('/home/damian/Pobrane/SampleVideo_640x360_5mb.mp4')
+		self.vp.load(media)
+		self.vp.show() 
+		self.vp.play()
+		   
 
 class MainWindow(QtGui.QMainWindow):
 
@@ -190,10 +192,15 @@ class MainWindow(QtGui.QMainWindow):
         #self.imageWidget = ImageWidget(self,screenShape.width()/2-100,screenShape.height()/2-100)
         #self.videoWidget = VideoWidget(self)
         
+        
         xml = XMLparser()
         
         for i in xml.widgetList:
-			eval(i)
+	    	eval(i)
+		
+		
+		for i in xml.pageWidgetList:
+			print i[1]
         
 
         self.showFullScreen()
