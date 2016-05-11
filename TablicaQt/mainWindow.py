@@ -192,15 +192,18 @@ class MainWindow(QtGui.QMainWindow):
         #self.imageWidget = ImageWidget(self,screenShape.width()/2-100,screenShape.height()/2-100)
         #self.videoWidget = VideoWidget(self)
         
+        #self.imageWidget.hide()
         
         xml = XMLparser()
         
+        
         for i in xml.widgetList:
 	    	eval(i)
+	    	print i
 		
 		
-		for i in xml.pageWidgetList:
-			print i[1]
+	    #for i in xml.pageWidgetList:
+			#print i[1]
         
 
         self.showFullScreen()
