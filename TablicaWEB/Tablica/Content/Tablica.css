@@ -1,13 +1,12 @@
 ﻿div.obiekt {
     border-style: solid;
-    width: 200px;
-    height: auto;
     object-position: left,top;
+    position: absolute;
 }
 
 div.ob {
     border-style: solid;
-    width: 200px;
+    width: auto;
     height: auto;
     object-position: left,top;
 }
@@ -29,4 +28,24 @@ div.ob {
 #listOfElem {
     border-style: double;
     float: left;
+}
+
+.delete ob {
+    width: 20px;
+    height: 20px;
+    position: inherit;
+}
+
+.zegar {
+    width: 200px;
+    height: 200px;
+}
+
+.rss {
+    width: 300px;
+}
+
+.pogoda {
+    width: 200px;
+    height: auto;
 }
