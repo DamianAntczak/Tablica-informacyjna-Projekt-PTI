@@ -2,6 +2,7 @@
     border-style: solid;
     object-position: left,top;
     position: absolute;
+    background-color: powderblue;
 }
 
 div.ob {
@@ -9,9 +10,10 @@ div.ob {
     width: auto;
     height: auto;
     object-position: left,top;
+    background-color: darkseagreen;
 }
 
-#tablica {
+#table {
     width: 800px;
     height: 600px;
     border-style: solid;
@@ -34,9 +36,15 @@ div.ob {
     width: 20px;
     height: 20px;
     position: inherit;
+    background-color:red;
+}
+.appendXML ob{
+    width: auto;
+    height: auto;
+    position: inherit;
 }
 
-.zegar {
+.watch {
     width: 200px;
     height: 200px;
 }
@@ -45,7 +53,13 @@ div.ob {
     width: 300px;
 }
 
-.pogoda {
+.weather {
     width: 200px;
     height: auto;
 }
+
+.pictures{
+    width: 300px;
+    height: 300px;
+}
+

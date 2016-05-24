@@ -3,124 +3,146 @@
 <script type="text/javascript">
     $(function () {
         $("#gen").click(function () {
-            $(".xD").val("klik");
+            $(".xD").val($(readObject($("#table").children("obiekt"))));
         });
     })
-    $(function () {
+    function readObject(elem) {
+        var $html;
+        //$("obiekt").each(function () {
+          //  $html.append($(this).)
+       // });
+        var $html = $("#table").html();
+        $("#area").text($html);
+        //return $("#table").find('*').css("color", "yellow");
+       
+    }
+    $(function main() {
         function addElementsToDivs(elem) {
-            if ($(elem).hasClass('zegar')) {
+            if ($(elem).hasClass('watch')) {
                elem.append('<table><tr><td>drag x: </td><td><input type="text" class="xPos" /></td></tr><tr><td>drag y: </td><td><input type="text" class="yPos" /></td></tr></table>');
             }
             else if ($(elem).hasClass('rss')) {
-                elem.append('<p>Adres RSS: </p><input type="text" class="addr"/>');
+                elem.append('<p>Adres RSS: </p><input type="text" class="rssInpput"/>');
             }
-            else if ($(elem).hasClass('pogoda')) {
-                elem.append('<p>Podaj miejsce</p><input type="text" class="weather"/>');
+            else if ($(elem).hasClass('weather')) {
+                elem.append('<p>Podaj miejsce</p><input type="text" class="weatherInput"/>');
             }
-            //elem.children('.zegar').append('<table><tr><td>drag x: </td><td><input type="text" class="xPos" /></td></tr><tr><td>drag y: </td><td><input type="text" class="yPos" /></td></tr></table>');
-		}
+            else if ($(elem).hasClass('pictures')) {
+                elem.append('<p>Podaj adress do albumu</p><input type="text" class="picturesInput"/>')
+            }
+        }
+        function generateElementXML(elem) {
+            $("#area").append("Klik");
+            var area = $("#area");
+            var p = $("#table").offset();
+            if ($(elem).hasClass('watch')) {
+                var $l = $(elem).offset().left.toFixed(0) - p.left.toFixed(0)
+                //area.append(elem.getLT() + "dd");
+                $("#area").append('Zegar "<br>" ');
+                area.append($l);
+            }
+            else if ($(elem).hasClass('rss')) {
+            }
+            else if ($(elem).hasClass('weather')) {
+            }
+            else if ($(elem).hasClass('pictures')) {
+            }
+        }
         var $startPostion = $("#firstdiv");
         var $element;
-        var $pos;
+        var $pos;   
         $(".ob").draggable({
             helper: "clone",
             revert: "invalid"
         });
-        $("#tablica").droppable({
+        $("#table").droppable({
             accept: ".ob",
             drop: function (event, ui) {
                 $(this).append($(ui.draggable).clone());
-                $("#tablica .ob").addClass("obiekt");
+                $("#table .ob").addClass("obiekt");
                 $(".obiekt").removeClass("ui-draggable ob");
-              //  $(".obiekt") = addElementsToDivs($(".obiekt"));
                 $(".obiekt").draggable({
                     create: function (event, ui) {
-                        $(this).position({
+                        var elem = this;
+                        $(elem).position({
 							my: "left top",
 							at: "left top",
                             of: $startPostion
                         });
+
                         var $left = 0;
                         var $top = 0;
-						$(this).append('<input type="button" class="delete" value="X"/>');
-						$(this).children(".delete").position({
+                        $(elem).append('<input type="button" class="delete" value="X"/>');
+                        $(elem).append('<input type="button" class="appendXML" value="XML"/>');
+						$(elem).children(".delete").position({
 							my: "right top",
 							at: "right top",
-							of: this
+							of: elem
 						});
-						$(this).children(".delete").click(function(){
-							$(this).closest(".obiekt").detach();
+						$(elem).children(".delete").click(function(){
+							$(elem).closest(".obiekt").detach();
 						});
-						addElementsToDivs($(this));
-					},
+						$(elem).children(".appendXML").position({
+						    my: "right bottom",
+						    at: "right bottom",
+						    of: elem
+						});
+						$(elem).children(".appendXML").click(function(){
+						    generateElementXML($(elem));
+						    });
+						addElementsToDivs($(elem));
+						function g() {
+						    $pos = $(this).offset();
+						    var ob = {}
+						    ob["v1"] = $pos.left - $startPostion.offset().left;
+						    return ob;
+						}
+                    },
                     start: function () {
                         $element = this;
 
                     },
                     drag: function (event, ui) {
                         $pos = $(this).offset();
-                        $left = $pos.left - $startPostion.offset().left;
-                        $top = $pos.top - $startPostion.offset().top;
+                        $left = ($pos.left - $startPostion.offset().left);
+                        $top = ($pos.top - $startPostion.offset().top);
                         $(".xPos", $element).val($left);
                         $(".yPos", $element).val($top);
-                        $(".xD").val("left: " + $left + " top: " + $top);
+                        $(".xD").val("left: " + $left.toFixed(0) + " top: " + $top.toFixed(0));
                     },
-                    containment: "#tablica"
+                    containment: "#table"
+                   
                 });
             }
         });
     });
 </script>
-<div id="tablica">
+<div id="table">
     <div id="firstdiv">
     </div>
 </div>
 <ul id="listOfElem" style="list-style: none">
     <li class="elem">
-        <div class="ob zegar">
+        <div class="ob watch">
             <p id="pd">Zegar</p>
-            @*<table>
-                <tr>
-                    <td>drag x: </td>
-                    <td><input type="text" class="xPos" /></td>
-                </tr>
-                <tr>
-                    <td>drag y: </td>
-                    <td><input type="text" class="yPos" /></td>
-                </tr>
-            </table>*@
         </div>
     </li>
     <li class="elem">
         <div class="ob rss">
             <p id="pd">RSS</p>
-            @*<table>
-                <tr>
-                    <td>drag x: </td>
-                    <td><input type="text" class="xPos" /></td>
-                </tr>
-                <tr>
-                    <td>drag y: </td>
-                    <td><input type="text" class="yPos" /></td>
-                </tr>
-            </table>*@
         </div>
     </li>
     <li class="elem">
-        <div class="ob pogoda">
+        <div class="ob weather">
             <p id="pd">Pogoda</p>
-            @*<table>
-                <tr>
-                    <td>drag x: </td>
-                    <td><input type="text" class="xPos" /></td>
-                </tr>
-                <tr>
-                    <td>drag y: </td>
-                    <td><input type="text" class="yPos" /></td>
-                </tr>
-            </table>*@
+        </div>
+    </li>
+    <li  class="elem">
+        <div class="ob pictures">
+            <p>Zdjęcia</p>
         </div>
     </li>
 </ul>
 <input type="text" class="xD" />
 <input id="gen" type="button" value="Generuj" />
+<textarea rows="100" cols="100" id="area">wyświetlać to w p !!!!!!!</textarea>
