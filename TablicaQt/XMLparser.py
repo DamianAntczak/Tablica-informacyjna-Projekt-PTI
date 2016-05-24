@@ -10,9 +10,9 @@ class XMLparser:
 	s = '';
 	widgetList = []
 	pageWidgetList = []
-	
-	
-	
+
+
+
 	cNodes = DOMTree.childNodes
 	for i in cNodes[0].getElementsByTagName("widget"):
 		# nazwa taga
@@ -22,16 +22,18 @@ class XMLparser:
 		# dostep do atrybutu
 		#print i.getElementsByTagName("WeathercastWidget")[0].getAttribute("x")
 		#print i.getElementsByTagName("WeathercastWidget")[0].getAttribute("y")
-		
-		
-		
-		if not i.getAttribute("extra"):
+
+
+
+		if not i.getAttribute("extra") and not i.getAttribute("url"):
 			s = i.getAttribute("name")+'(self,'+i.getAttribute("x")+','+i.getAttribute("y")+')'
+		elif i.getAttribute("url"):
+			s = i.getAttribute("name")+'(self,'+i.getAttribute("x")+','+i.getAttribute("y")+','+i.getAttribute("url")+')'
 		else:
 			s = i.getAttribute("name")+'(self,'+i.getAttribute("x")+','+i.getAttribute("y")+','+i.getAttribute("extra")+')'
 			print s
 		widgetList.append(s)
-		
+
 	counter = 0
 	cNodes = DOMTree.childNodes
 	for i in cNodes[0].getElementsByTagName("page"):
@@ -42,5 +44,5 @@ class XMLparser:
 			else:
 				s = x.getAttribute("name")+'(self,'+x.getAttribute("x")+','+x.getAttribute("y")+','+i.getAttribute("extra")+')'
 			pageWidgetList.append((counter,s))
-			
-		
+
+

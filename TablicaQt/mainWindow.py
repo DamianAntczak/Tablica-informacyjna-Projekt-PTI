@@ -169,16 +169,17 @@ class VideoWidget(QtGui.QWidget):
 
 class HtmlWidget(QtGui.QWidget):
     
-    def __init__(self,parent=None, x=0, y=0):
+    def __init__(self,parent=None, x=0, y=0, url="http://www.capefearit.com/"):
         super(HtmlWidget,self).__init__(parent)
         
-        self.initUI(x,y)
+        self.initUI(x,y,url)
         
-    def initUI(self,x,y):
+    def initUI(self,x,y,url):
         self.setGeometry(x,y,500,300)
-        
+
+        print url
         browser = QWebView(self)
-        browser.load(QUrl("http://www.capefearit.com/"))
+        browser.load(QUrl(url))
         browser.show()
 
 class MainWindow(QtGui.QMainWindow):

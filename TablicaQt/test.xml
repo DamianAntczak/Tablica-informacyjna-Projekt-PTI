@@ -6,7 +6,7 @@
         <widget name="ImageWidget" x="300" y="85"></widget>
         <widget name="DateTimeWidget" x="950" y="10"></widget>
         <widget name="DateTimeWidget" x="950" y="800"></widget>
-	<widget name="HtmlWidget" x="100" y="500"></widget>
+	<widget name="HtmlWidget" x="100" y="500" url="'http://www.zyvra.org/html/simple.htm'"></widget>
     </page>
     <page>
 		
