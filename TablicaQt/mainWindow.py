@@ -169,15 +169,13 @@ class VideoWidget(QtGui.QWidget):
 
 class HtmlWidget(QtGui.QWidget):
     
-    def __init__(self,parent=None):
+    def __init__(self,parent=None, x=0, y=0):
         super(HtmlWidget,self).__init__(parent)
         
-        self.initUI()
+        self.initUI(x,y)
         
-    def initUI(self):
-        self.setGeometry(200,600,500,300)
-        self.text = QtGui.QLabel("HTML",self)
-        self.text.setStyleSheet("font-size: 24px");
+    def initUI(self,x,y):
+        self.setGeometry(x,y,500,300)
         
         browser = QWebView(self)
         browser.load(QUrl("http://www.capefearit.com/"))
@@ -208,7 +206,7 @@ class MainWindow(QtGui.QMainWindow):
         #self.rssWidget = RssWidget(self,screenShape.width()*0.2,screenShape.height()*0.75)
         #self.imageWidget = ImageWidget(self,screenShape.width()/2-100,screenShape.height()/2-100)
         #self.videoWidget = VideoWidget(self)
-        self.htmlWidget = HtmlWidget(self)
+        #self.htmlWidget = HtmlWidget(self)
         
         #self.imageWidget.hide()
         

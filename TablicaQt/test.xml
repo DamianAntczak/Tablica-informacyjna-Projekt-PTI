@@ -1,11 +1,12 @@
 <table>
     <page>
-		<widget name="WeathercastWidget" x="10" y="10" ></widget>
+	<widget name="WeathercastWidget" x="10" y="10" ></widget>
         <widget name="RssWidget" x="600" y="500" ></widget>
         <widget name="RssWidget" x="600" y="750" extra="'http://fakty.interia.pl/feed'"></widget>
         <widget name="ImageWidget" x="300" y="85"></widget>
         <widget name="DateTimeWidget" x="950" y="10"></widget>
         <widget name="DateTimeWidget" x="950" y="800"></widget>
+	<widget name="HtmlWidget" x="100" y="500"></widget>
     </page>
     <page>
 		
