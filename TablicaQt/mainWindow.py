@@ -9,6 +9,8 @@ import urllib, json
 import feedparser
 from PyQt4.phonon import Phonon
 from XMLparser import XMLparser
+from PyQt4.QtWebKit import QWebView
+from PyQt4.QtCore import QUrl
 
 
 class DateTimeWidget(QtGui.QWidget):
@@ -132,7 +134,7 @@ class ImageWidget(QtGui.QWidget):
 		self.timer.start()
 		
 	def displayImage(self):
-		self.myPixmap = QtGui.QPixmap('/home/damian/Dokumenty/tablica/images/'+self.fileNameArray[self.i])
+		self.myPixmap = QtGui.QPixmap('/home/damian/Projekty/Tablica-informacyjna-Projekt-PTI/TablicaQt/images/'+self.fileNameArray[self.i])
 		self.myScaledPixmap = self.myPixmap.scaled(self.labelImg.size(), QtCore.Qt.KeepAspectRatio)
 		self.labelImg.setPixmap(self.myScaledPixmap)
 		if self.i == len(self.fileNameArray) - 1:
@@ -144,7 +146,7 @@ class ImageWidget(QtGui.QWidget):
 		super(ImageWidget, self).__init__(parent)
 	
 		self.initUI(x,y)
-		self.fileNameArray = os.listdir("/home/damian/Dokumenty/tablica/images")
+		self.fileNameArray = os.listdir("/home/damian/Projekty/Tablica-informacyjna-Projekt-PTI/TablicaQt/images/")
 		self.i = 0;
 		
 		
@@ -164,7 +166,22 @@ class VideoWidget(QtGui.QWidget):
 		self.vp.load(media)
 		self.vp.show() 
 		self.vp.play()
-		   
+
+class HtmlWidget(QtGui.QWidget):
+    
+    def __init__(self,parent=None):
+        super(HtmlWidget,self).__init__(parent)
+        
+        self.initUI()
+        
+    def initUI(self):
+        self.setGeometry(200,600,500,300)
+        self.text = QtGui.QLabel("HTML",self)
+        self.text.setStyleSheet("font-size: 24px");
+        
+        browser = QWebView(self)
+        browser.load(QUrl("http://www.capefearit.com/"))
+        browser.show()
 
 class MainWindow(QtGui.QMainWindow):
 
@@ -191,6 +208,7 @@ class MainWindow(QtGui.QMainWindow):
         #self.rssWidget = RssWidget(self,screenShape.width()*0.2,screenShape.height()*0.75)
         #self.imageWidget = ImageWidget(self,screenShape.width()/2-100,screenShape.height()/2-100)
         #self.videoWidget = VideoWidget(self)
+        self.htmlWidget = HtmlWidget(self)
         
         #self.imageWidget.hide()
         
