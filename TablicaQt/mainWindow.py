@@ -194,7 +194,7 @@ class MainWindow(QtGui.QMainWindow):
         self.statusBar().showMessage('Ready')
 
         self.setGeometry(300, 300, 250, 150)
-        self.setStyleSheet("background-color: #f5f5f5") 
+        #self.setStyleSheet("background-color: #f5f5f5")
         
         #self.dateTimeWidget = DateTimeWidget(self,0,20)
         
@@ -212,7 +212,8 @@ class MainWindow(QtGui.QMainWindow):
         #self.imageWidget.hide()
         
         xml = XMLparser()
-        
+
+        self.setStyleSheet(xml.style)
         
         for i in xml.widgetList:
 	    	eval(i)

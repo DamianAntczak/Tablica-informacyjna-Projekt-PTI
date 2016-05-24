@@ -1,5 +1,6 @@
 <table>
     <page>
+        <style>background-color: #f5ff00</style>
 	<widget name="WeathercastWidget" x="10" y="10" ></widget>
         <widget name="RssWidget" x="600" y="500" ></widget>
         <widget name="RssWidget" x="600" y="750" extra="'http://fakty.interia.pl/feed'"></widget>
