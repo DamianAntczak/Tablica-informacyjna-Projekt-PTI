@@ -7,6 +7,8 @@ import os
 from PyQt4 import QtGui, QtCore
 import urllib, json
 import feedparser
+
+from PyQt4.QtGui import QPixmap
 from PyQt4.phonon import Phonon
 from XMLparser import XMLparser
 from PyQt4.QtWebKit import QWebView
@@ -210,6 +212,11 @@ class MainWindow(QtGui.QMainWindow):
         #self.htmlWidget = HtmlWidget(self)
         
         #self.imageWidget.hide()
+
+        self.timer = QtCore.QTimer(self)
+        self.timer.setInterval(1000)
+        self.timer.timeout.connect(self.takeScreenshot)
+        self.timer.start()
         
         xml = XMLparser()
 
@@ -225,18 +232,24 @@ class MainWindow(QtGui.QMainWindow):
         
 
         self.showFullScreen()
+
+
         
 	def keyPressEvent(self, e):
 
 		if e.key() == QtCore.Qt.Key_Escape:
 			self.close()
 
+    def takeScreenshot(self):
+        p = QPixmap.grabWindow(self.winId(), 0, 0, self.width(), self.height())
+        p.save('scren', 'jpg')
+
 
 def main():
 
     app = QtGui.QApplication(sys.argv)
     ex = MainWindow()
-    
+
     
     
     sys.exit(app.exec_())
