@@ -131,7 +131,7 @@ class ImageWidget(QtGui.QWidget):
 		#self.labelImg.setPixmap(self.myScaledPixmap)
 		
 		self.timer = QtCore.QTimer(self)
-		self.timer.setInterval(1000)
+		self.timer.setInterval(2000)
 		self.timer.timeout.connect(self.displayImage)
 		self.timer.start()
 		
@@ -177,7 +177,7 @@ class HtmlWidget(QtGui.QWidget):
         self.initUI(x,y,url)
         
     def initUI(self,x,y,url):
-        self.setGeometry(x,y,500,300)
+        self.setGeometry(x,y,650,400)
 
         print url
         browser = QWebView(self)
@@ -243,6 +243,7 @@ class MainWindow(QtGui.QMainWindow):
     def takeScreenshot(self):
         p = QPixmap.grabWindow(self.winId(), 0, 0, self.width(), self.height())
         p.save('scren', 'jpg')
+
 
 
 def main():

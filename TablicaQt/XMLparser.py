@@ -11,6 +11,9 @@ class XMLparser:
     style = ''
     widgetList = []
     pageWidgetList = []
+    isProcent = False
+    x = ''
+    y = ''
 
 
     cNodes = DOMTree.childNodes
@@ -28,14 +31,21 @@ class XMLparser:
         #print i.getElementsByTagName("WeathercastWidget")[0].getAttribute("x")
         #print i.getElementsByTagName("WeathercastWidget")[0].getAttribute("y")
 
+        if  ('%' in i.getAttribute("x")) and ('%' in i.getAttribute("y")):
+            isProcent = True
+            x = i.getAttribute("x").strip('%')+'*0.01*screenShape.width()'
+            y = i.getAttribute("y").strip('%')+'*0.01*screenShape.height()'
+        else:
+            x = i.getAttribute("x")
+            y = i.getAttribute("y")
 
 
         if not i.getAttribute("extra") and not i.getAttribute("url"):
-            s = i.getAttribute("name")+'(self,'+i.getAttribute("x")+','+i.getAttribute("y")+')'
+            s = i.getAttribute("name")+'(self,'+x+','+y+')'
         elif i.getAttribute("url"):
-            s = i.getAttribute("name")+'(self,'+i.getAttribute("x")+','+i.getAttribute("y")+','+i.getAttribute("url")+')'
+            s = i.getAttribute("name")+'(self,'+x+','+y+','+i.getAttribute("url")+')'
         else:
-            s = i.getAttribute("name")+'(self,'+i.getAttribute("x")+','+i.getAttribute("y")+','+i.getAttribute("extra")+')'
+            s = i.getAttribute("name")+'(self,'+x+','+y+','+i.getAttribute("extra")+')'
             print s
         widgetList.append(s)
 
