@@ -73,7 +73,7 @@
                 $x = $widget[i].getX();
                 $y = $widget[i].getY();
                 if ($class == 'watch') {
-                   $val = $val +  '<widget name="DateTimeWidget" x="' + $x + '"+ y="' + $y + '"></widget>';
+                    $val = $val + '<widget name="DateTimeWidget" x="' + $x + '"+ y="' + $y + '"></widget>';
                 }
                 else if ($class == 'rss') {
                     $val = $val + '<widget name="RssWidget" x="' + $x + '"+ y="' + $y + '"></widget>';
@@ -81,7 +81,7 @@
                 else if ($class == 'weather') {
                     $val = $val + '<widget name="WeathercastWidget" x="' + $x + '"+ y="' + $y + '"></widget>';
                 }
-                else if ($class == 'pictures' ){
+                else if ($class == 'pictures') {
                     $val = $val + '<widget name="ImageWidget" x="' + $x + '"+ y="' + $y + '"></widget>';
                 }
                 $val = $val + "\n";
@@ -108,8 +108,7 @@
                     var $left = "0";
                     var $top = "0";
                     var $localID = $id;
-                    $id = $id + 1;
-                    var $obiekt = new Obiekt($id, $left, $top);
+                    var $obiekt = new Obiekt($localID, $left, $top);
                     $(tab).append($(ui.draggable).clone());
                     $("#table .ob").addClass("obiekt");
                     $(".obiekt").removeClass("ui-draggable ob");
@@ -125,14 +124,6 @@
 
                             //---
                             $obiekt.setClass(checkClass($(elem)));
-                            // $(area).val($xmlTab[$localIndex]);
-
-
-                            $(elem).children(".delete").click(function () {
-                                $xmlTab.splice($localIndex, 1);
-                                $(elem).closest(".obiekt").detach();
-
-                            });
                             addElementsToDivs($(elem));
                             $widget.push($obiekt);
                             $(elem).append('<input type="button" class="delete" value="X"/>');
@@ -141,7 +132,17 @@
                                 at: "right top",
                                 of: elem
                             });
+                            $(elem).children(".delete").click(function () {
+                                // $xmlTab.splice($localIndex, 1);
+                                for (var i = 0; i < $widget.length; i++) {
+                                    if ($widget[i].id == $localID) {
+                                        $widget.splice(i, 1);
+                                        break;
+                                    }
+                                }
+                                $(elem).closest(".obiekt").remove();
 
+                            });
                         },
                         start: function () {
                             $element = this;
@@ -157,15 +158,23 @@
                         },
                         containment: "#table",
                         stop: function (event, ui) {
-                           // var $index = $widget
-                            if ($index != 0) {
-                                var $url = $(elem).children(".input").val();
-                                //nowa tablica ze stringiem XMLowisim
-                                // $xmlTab[$index] = generateElementXML($(elem), $index, $left, $top, $url);
+                            var $x = $left.toFixed(0);
+                            var $y = $top.toFixed(0);
+                            for (var i = 0; i < $widget.length; i++) {
+                                if ($widget[i].id == $localID) {
+                                    $widget[i].changePosition($x, $y);
+                                    break;
+                                }
                             }
+                            //if ($index != 0) {
+                            //    var $url = $(elem).children(".input").val();
+                            //nowa tablica ze stringiem XMLowisim
+                            // $xmlTab[$index] = generateElementXML($(elem), $index, $left, $top, $url);
+                            //}
                         }
 
                     });
+                    $id = $id + 1;
                 }
             }
         });
