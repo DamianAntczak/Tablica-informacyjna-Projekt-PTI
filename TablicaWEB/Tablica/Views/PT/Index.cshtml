@@ -1,56 +1,99 @@
 ﻿<script src="jquery.js" type="text/javascript"></script>
 <script src="jquery-ui.min.js" type="text/javascript"></script>
 <script type="text/javascript">
-    $(function () {
-        $("#gen").click(function () {
-            $(".xD").val($(readObject($("#table").children("obiekt"))));
-        });
-    })
-    function readObject(elem) {
-        var $html;
-        //$("obiekt").each(function () {
-          //  $html.append($(this).)
-       // });
-        var $html = $("#table").html();
-        $("#area").text($html);
-        //return $("#table").find('*').css("color", "yellow");
-       
-    }
     $(function main() {
-        function addElementsToDivs(elem) {
-            if ($(elem).hasClass('watch')) {
-               elem.append('<table><tr><td>drag x: </td><td><input type="text" class="xPos" /></td></tr><tr><td>drag y: </td><td><input type="text" class="yPos" /></td></tr></table>');
+        class Obiekt {
+            constructor(id, x, y) {
+                this.id = id;
+                this.x = x;
+                this.y = y;
+                this.class = "";
+                this.additional = [];
             }
-            else if ($(elem).hasClass('rss')) {
-                elem.append('<p>Adres RSS: </p><input type="text" class="rssInpput"/>');
+            changePosition(x, y) {
+                this.x = x;
+                this.y = y;
             }
-            else if ($(elem).hasClass('weather')) {
-                elem.append('<p>Podaj miejsce</p><input type="text" class="weatherInput"/>');
+            setClass(c) {
+                this.class = c;
             }
-            else if ($(elem).hasClass('pictures')) {
-                elem.append('<p>Podaj adress do albumu</p><input type="text" class="picturesInput"/>')
+            getClass() {
+                return this.class;
+            }
+            getX() {
+                return this.x;
+            }
+            getY() {
+                return this.y;
             }
         }
-        function generateElementXML(elem) {
-            $("#area").append("Klik");
-            var area = $("#area");
-            var p = $("#table").offset();
+        var $id = 0;
+        var $xmlTab = [];
+        var $widget = [];
+        var table = $("#table");
+        function addElementsToDivs(elem) {
             if ($(elem).hasClass('watch')) {
-                var $l = $(elem).offset().left.toFixed(0) - p.left.toFixed(0)
-                //area.append(elem.getLT() + "dd");
-                $("#area").append('Zegar "<br>" ');
-                area.append($l);
+                elem.append('<table><tr><td>drag x: </td><td><input type="text" class="xPos" /></td></tr><tr><td>drag y: </td><td><input type="text" class="yPos" /></td></tr></table>');
             }
             else if ($(elem).hasClass('rss')) {
+                elem.append('<p>Adres RSS: </p><input type="text" class="rssInput input"/>');
             }
             else if ($(elem).hasClass('weather')) {
+                elem.append('<p>Podaj miejsce</p><input type="text" class="weatherInput input"/>');
             }
             else if ($(elem).hasClass('pictures')) {
+                elem.append('<p>Podaj adress do albumu</p><input type="text" class="picturesInput input"/>')
             }
+        }
+
+        function checkClass(elem) {
+            var $class = "";
+            if ($(elem).hasClass('watch')) {
+                $class = 'watch';
+            }
+            else if ($(elem).hasClass('rss')) {
+                $class = 'rss';
+            }
+            else if ($(elem).hasClass('weather')) {
+                $class = 'weather';
+            }
+            else if ($(elem).hasClass('pictures')) {
+                $class = 'pictures';
+            }
+            return $class
+        }
+        function generateXML() {
+            $(area).val("");
+            var $val = "";
+            var $class = "";
+            var $x = "";
+            var $y = "";
+            for (var i = 0; i < $widget.length; i++) {
+                $class = $widget[i].getClass();
+                $x = $widget[i].getX();
+                $y = $widget[i].getY();
+                if ($class == 'watch') {
+                   $val = $val +  '<widget name="DateTimeWidget" x="' + $x + '"+ y="' + $y + '"></widget>';
+                }
+                else if ($class == 'rss') {
+                    $val = $val + '<widget name="RssWidget" x="' + $x + '"+ y="' + $y + '"></widget>';
+                }
+                else if ($class == 'weather') {
+                    $val = $val + '<widget name="WeathercastWidget" x="' + $x + '"+ y="' + $y + '"></widget>';
+                }
+                else if ($class == 'pictures' ){
+                    $val = $val + '<widget name="ImageWidget" x="' + $x + '"+ y="' + $y + '"></widget>';
+                }
+                $val = $val + "\n";
+            }
+            return $val;
         }
         var $startPostion = $("#firstdiv");
         var $element;
-        var $pos;   
+        var $pos;
+        $("#gen").click(function () {
+            $(area).val(generateXML());
+        });
         $(".ob").draggable({
             helper: "clone",
             revert: "invalid"
@@ -58,61 +101,72 @@
         $("#table").droppable({
             accept: ".ob",
             drop: function (event, ui) {
-                $(this).append($(ui.draggable).clone());
-                $("#table .ob").addClass("obiekt");
-                $(".obiekt").removeClass("ui-draggable ob");
-                $(".obiekt").draggable({
-                    create: function (event, ui) {
-                        var elem = this;
-                        $(elem).position({
-							my: "left top",
-							at: "left top",
-                            of: $startPostion
-                        });
+                var tab = $(this);
+                drop(event, ui);
+                var elem
+                function drop(event, ui) {
+                    var $left = "0";
+                    var $top = "0";
+                    var $localID = $id;
+                    $id = $id + 1;
+                    var $obiekt = new Obiekt($id, $left, $top);
+                    $(tab).append($(ui.draggable).clone());
+                    $("#table .ob").addClass("obiekt");
+                    $(".obiekt").removeClass("ui-draggable ob");
+                    $(".obiekt").draggable({
+                        create: function (event, ui) {
+                            elem = this;
+                            $(elem).position({
+                                my: "left top",
+                                at: "left top",
+                                of: $startPostion
+                            });
+                            // $(elem).data('$localIndex', $localIndex);
 
-                        var $left = 0;
-                        var $top = 0;
-                        $(elem).append('<input type="button" class="delete" value="X"/>');
-                        $(elem).append('<input type="button" class="appendXML" value="XML"/>');
-						$(elem).children(".delete").position({
-							my: "right top",
-							at: "right top",
-							of: elem
-						});
-						$(elem).children(".delete").click(function(){
-							$(elem).closest(".obiekt").detach();
-						});
-						$(elem).children(".appendXML").position({
-						    my: "right bottom",
-						    at: "right bottom",
-						    of: elem
-						});
-						$(elem).children(".appendXML").click(function(){
-						    generateElementXML($(elem));
-						    });
-						addElementsToDivs($(elem));
-						function g() {
-						    $pos = $(this).offset();
-						    var ob = {}
-						    ob["v1"] = $pos.left - $startPostion.offset().left;
-						    return ob;
-						}
-                    },
-                    start: function () {
-                        $element = this;
+                            //---
+                            $obiekt.setClass(checkClass($(elem)));
+                            // $(area).val($xmlTab[$localIndex]);
 
-                    },
-                    drag: function (event, ui) {
-                        $pos = $(this).offset();
-                        $left = ($pos.left - $startPostion.offset().left);
-                        $top = ($pos.top - $startPostion.offset().top);
-                        $(".xPos", $element).val($left);
-                        $(".yPos", $element).val($top);
-                        $(".xD").val("left: " + $left.toFixed(0) + " top: " + $top.toFixed(0));
-                    },
-                    containment: "#table"
-                   
-                });
+
+                            $(elem).children(".delete").click(function () {
+                                $xmlTab.splice($localIndex, 1);
+                                $(elem).closest(".obiekt").detach();
+
+                            });
+                            addElementsToDivs($(elem));
+                            $widget.push($obiekt);
+                            $(elem).append('<input type="button" class="delete" value="X"/>');
+                            $(elem).children(".delete").position({
+                                my: "right top",
+                                at: "right top",
+                                of: elem
+                            });
+
+                        },
+                        start: function () {
+                            $element = this;
+
+                        },
+                        drag: function (event, ui) {
+                            $pos = $(this).offset();
+                            $left = ($pos.left - $startPostion.offset().left);
+                            $top = ($pos.top - $startPostion.offset().top);
+                            $(".xPos", $element).val($left);
+                            $(".yPos", $element).val($top);
+                            $(".xD").val("left: " + $left.toFixed(0) + " top: " + $top.toFixed(0));
+                        },
+                        containment: "#table",
+                        stop: function (event, ui) {
+                           // var $index = $widget
+                            if ($index != 0) {
+                                var $url = $(elem).children(".input").val();
+                                //nowa tablica ze stringiem XMLowisim
+                                // $xmlTab[$index] = generateElementXML($(elem), $index, $left, $top, $url);
+                            }
+                        }
+
+                    });
+                }
             }
         });
     });
@@ -137,7 +191,7 @@
             <p id="pd">Pogoda</p>
         </div>
     </li>
-    <li  class="elem">
+    <li class="elem">
         <div class="ob pictures">
             <p>Zdjęcia</p>
         </div>
