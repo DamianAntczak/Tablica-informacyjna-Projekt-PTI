@@ -118,7 +118,7 @@
     });
     $(".ob").draggable({
         helper: "clone",
-        revert: "invalid"
+        revert: "invalid"   
     });
 
 
@@ -155,6 +155,7 @@
                         addElementsToDivs($(elem));
                         widget.push(obiect);
                         $(elem).append('<input type="button" class="delete" value="X"/>');
+                        jQuery(elem).attr("id", id);
                         $(elem).children(".delete").position({
                             my: "right top",
                             at: "right top",
@@ -165,7 +166,7 @@
                             // xmlTab.splice($localIndex, 1);
                             for (var i = 0; i < widget.length; i++)
                             {
-                                if (widget[i].id == localID)
+                                if (widget[i].id == $(elem).attr("id"))
                                 {
                                     widget.splice(i, 1);
                                     break;
@@ -195,17 +196,12 @@
                         var y = $top.toFixed(0);
                         for (var i = 0; i < widget.length; i++)
                         {
-                            if (widget[i].id == localID)
+                            if (widget[i].id == $(this).attr("id"))
                             {
                                 widget[i].changePosition(x, y);
                                 break;
                             }
                         }
-                        //if ($index != 0) {
-                        //    var $url = $(elem).children(".input").val();
-                        //nowa tablica ze stringiem XMLowisim
-                        // xmlTab[$index] = generateElementXML($(elem), $index, left, $top, $url);
-                        //}
                     }
 
                 });
