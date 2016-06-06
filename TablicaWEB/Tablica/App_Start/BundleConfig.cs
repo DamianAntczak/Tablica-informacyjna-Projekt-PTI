@@ -28,6 +28,10 @@ namespace Tablica {
             bundles.Add(new ScriptBundle("~/bundles/custom").Include(
                         "~/Scripts/customJS.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/tableManagement").Include(
+                                "~/Scripts/tableManagement.js"
+                ));
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
