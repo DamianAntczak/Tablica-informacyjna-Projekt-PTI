@@ -7,12 +7,15 @@ import os
 from PyQt4 import QtGui, QtCore
 import urllib, json
 import feedparser
+import ftplib
+
 
 from PyQt4.QtGui import QPixmap
 from PyQt4.phonon import Phonon
 from XMLparser import XMLparser
 from PyQt4.QtWebKit import QWebView
 from PyQt4.QtCore import QUrl
+
 
 
 class DateTimeWidget(QtGui.QWidget):
@@ -214,7 +217,7 @@ class MainWindow(QtGui.QMainWindow):
         #self.imageWidget.hide()
 
         self.timer = QtCore.QTimer(self)
-        self.timer.setInterval(1000)
+        self.timer.setInterval(5000)
         self.timer.timeout.connect(self.takeScreenshot)
         self.timer.start()
         
@@ -242,8 +245,16 @@ class MainWindow(QtGui.QMainWindow):
 
     def takeScreenshot(self):
         p = QPixmap.grabWindow(self.winId(), 0, 0, self.width(), self.height())
-        p.save('scren', 'jpg')
-
+        p.save('screenshot.jpg', 'jpg')
+        ftp = ftplib.FTP("XX.XX.XX.XX")
+        ftp.login("XX", "XXX")
+        ftp.cwd("/var/www/html")
+        filename = 'screenshot.jpg'
+        os.chdir('/home/damian/Projekty/Tablica-informacyjna-Projekt-PTI/TablicaQt')
+        myfile = open(filename, 'r')
+        #print ftp.retrlines('LIST')
+        ftp.storbinary('STOR ' + filename, myfile)
+        myfile.close()
 
 
 def main():
