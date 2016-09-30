@@ -1,0 +1,71 @@
+﻿div.obiekt {
+    border-style: solid;
+    object-position: left,top;
+    position: absolute;
+    background-color: powderblue;
+}
+
+div.ob {
+    border-style: solid;
+    width: auto;
+    height: auto;
+    object-position: left,top;
+    background-color: darkseagreen;
+}
+
+#table {
+    width: 800px;
+    height: 600px;
+    border-style: solid;
+    border-color: red;
+    float: left;
+}
+
+#firstdiv {
+    border-style: dotted;
+    width: 200px;
+    height: 100px;
+}
+
+#listOfElem {
+    border-style: double;
+    float: left;
+}
+
+.delete ob {
+    width: 20px;
+    height: 20px;
+    position: inherit;
+    background-color:red;
+}
+.appendXML ob{
+    width: auto;
+    height: auto;
+    position: inherit;
+}
+
+.watch {
+    width: 200px;
+    height: 200px;
+}
+
+.rss {
+    width: 300px;
+}
+
+.weather {
+    width: 200px;
+    height: auto;
+}
+
+.pictures{
+    width: 300px;
+    height: 300px;
+}
+
+.http{
+    width: 450px;
+    height: 500px;
+}
+
+
